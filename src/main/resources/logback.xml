@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Свойства -->
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <property name="COLORED_PATTERN" value="%d{HH:mm:ss.SSS} %highlight(%-5level) [%thread] %cyan(%logger{36}) - %msg%n"/>
+    
+    <!-- Аппендер для консоли с цветами -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${COLORED_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Аппендер для файла с ротацией -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/postgres-scaler.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/postgres-scaler-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Асинхронный аппендер для производительности -->
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE"/>
+        <queueSize>512</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+    </appender>
+
+    <!-- Логгер для HikariCP -->
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+    <logger name="com.zaxxer.hikari.pool.PoolBase" level="ERROR"/>
+    
+    <!-- Логгер для PostgreSQL -->
+    <logger name="org.postgresql" level="WARN"/>
+    
+    <!-- Наш логгер с разными уровнями -->
+    <logger name="org.fedorov.pgtablescaler" level="INFO"/>
+    <logger name="org.fedorov.pgtablescaler.TableMetadata" level="INFO"/>
+    <logger name="org.fedorov.pgtablescaler.TableGenerator" level="INFO"/>
+    <logger name="org.fedorov.pgtablescaler.TableScaler" level="INFO"/>
+    
+    <!-- Для DEBUG режима (раскомментировать при необходимости) -->
+    <!-- 
+    <logger name="org.fedorov.pgtablescaler" level="DEBUG"/>
+    <logger name="org.fedorov.pgtablescaler.TableGenerator.GenerateTask" level="DEBUG"/>
+    <logger name="org.fedorov.pgtablescaler.TableScaler.ScaleTask" level="DEBUG"/>
+    -->
+
+    <!-- Для TRACE режима (очень подробно) -->
+    <!-- 
+    <logger name="org.fedorov.pgtablescaler" level="TRACE"/>
+    -->
+
+    <!-- Корневой логгер -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ASYNC"/>
+    </root>
+</configuration>

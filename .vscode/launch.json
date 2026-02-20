@@ -1,0 +1,161 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug PostgresTableScaler (Generate)",
+            "request": "launch",
+            "mainClass": "org.fedorov.pgtablescaler.PostgresTableScaler",
+            "projectName": "postgres-table-scaler",
+            "args": [
+                "--host", "localhost",
+                "--port", "5432",
+                "--db", "postgres",
+                "--user", "alexfedorov",
+                "--password", "password",
+                "--schema", "public",
+                "--pool-size", "10",
+                "-i", "accounts",
+                "-g",
+                "-n", "1000",
+                "-t", "2",
+                "-b", "100"
+            ],
+            "vmArgs": [
+                "-Xmx2G",
+                "-Xms2G",
+                "-Dlogging.level.org.fedorov.pgtablescaler=DEBUG"
+            ],
+            "env": {
+                "PGHOST": "localhost",
+                "PGPORT": "5432",
+                "PGUSER": "postgres",
+                "PGPASSWORD": "password",
+                "PGDATABASE": "postgres"
+            },
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "java",
+            "name": "Debug PostgresTableScaler (Scale)",
+            "request": "launch",
+            "mainClass": "org.fedorov.pgtablescaler.PostgresTableScaler",
+            "projectName": "postgres-table-scaler",
+            "args": [
+                "--host", "localhost",
+                "--port", "5432",
+                "--db", "postgres",
+                "--user", "alexfedorov",
+                "--password", "password",
+                "--schema", "public",
+                "--pool-size", "10",
+                "-i", "accounts",
+                "-o", "accounts_scaled",
+                "-s", "5",
+                "-t", "4",
+                "-b", "500"
+            ],
+            "vmArgs": [
+                "-Xmx2G",
+                "-Xms2G",
+                "-Dlogging.level.org.fedorov.pgtablescaler=DEBUG"
+            ],
+            "env": {
+                "PGHOST": "localhost",
+                "PGPORT": "5432",
+                "PGUSER": "alexfedorov",
+                "PGPASSWORD": "password",
+                "PGDATABASE": "postgres"
+            },
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "java",
+            "name": "Debug PostgresTableScaler (Generate - Small Test)",
+            "request": "launch",
+            "mainClass": "org.fedorov.pgtablescaler.PostgresTableScaler",
+            "projectName": "postgres-table-scaler",
+            "args": [
+                "--host", "localhost",
+                "--port", "5432",
+                "--db", "postgres",
+                "--user", "alexfedorov",
+                "--password", "password",
+                "-i", "accounts",
+                "-g",
+                "-n", "10",
+                "-t", "1",
+                "-b", "5"
+            ],
+            "vmArgs": [
+                "-Xmx1G",
+                "-Xms1G",
+                "-Dlogging.level.org.fedorov.pgtablescaler=TRACE"
+            ],
+            "env": {
+                "PGHOST": "localhost",
+                "PGPORT": "5432",
+                "PGUSER": "postgres",
+                "PGPASSWORD": "password"
+            },
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "java",
+            "name": "Debug PostgresTableScaler (Current File)",
+            "request": "launch",
+            "mainClass": "org.fedorov.pgtablescaler.PostgresTableScaler",
+            "projectName": "postgres-table-scaler",
+            "args": "${command:SpecifyProgramArgs}",
+            "vmArgs": "-Xmx2G -Xms2G",
+            "env": {
+                "PGHOST": "localhost",
+                "PGPORT": "5432",
+                "PGUSER": "alexfedorov",
+                "PGPASSWORD": "password"
+            },
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "java",
+            "name": "Debug with Maven",
+            "request": "launch",
+            "mainClass": "org.fedorov.pgtablescaler.PostgresTableScaler",
+            "projectName": "postgres-table-scaler",
+            "args": [
+                "--host", "${env:PGHOST}",
+                "--port", "${env:PGPORT}",
+                "--db", "${env:PGDATABASE}",
+                "--user", "${env:PGUSER}",
+                "--password", "${env:PGPASSWORD}",
+                "-i", "accounts",
+                "-g",
+                "-n", "100",
+                "-t", "2",
+                "-b", "20"
+            ],
+            "vmArgs": [
+                "-Xmx2G",
+                "-Xms2G",
+                "-Dlogging.level.org.fedorov.pgtablescaler=DEBUG"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "All Debug Configurations",
+            "configurations": [
+                "Debug PostgresTableScaler (Generate - Small Test)",
+                "Debug PostgresTableScaler (Generate)",
+                "Debug PostgresTableScaler (Scale)"
+            ]
+        }
+    ]
+}
